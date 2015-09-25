@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <link href="Estilos/estilos.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+        <script src="Funciones/funciones.js"></script>
+    </head>
+    <body>
+        <h1>Login</h1>
+        
+        <input type="text" placeholder="Nombre de usuario" id="usuario">
+        <input type="password" placeholder="Contraseña" id="password">
+        
+        <button onclick="login()">Loguearse</button>
+        
+        <div id="mensaje">Texto de relleno</div>
+        
+        <div>
+            <a href="index.html"><p>o puedes Registrarte</p></a>
+        </div>
+    </body>
+    
+    <script>
+        function login()
+        {
+            //capturar los datos escritos
+            usuario = document.getElementById('usuario').value;
+            password = document.getElementById('password').value;
+            //comparar con valores almacenados
+            usuarioAlmacenado = localStorage.getItem('usuario');
+            passwordAlmacenado = localStorage.getItem('password1');
+            
+            if(usuario == usuarioAlmacenado && password == passwordAlmacenado)
+            {
+                document.getElementById('usuario').style.border="none";
+                document.getElementById('password').style.border="none";
+                
+                mensaje = document.getElementById('mensaje');
+                mensaje.style.opacity = "1";
+                mensaje.style.color = "white";
+                mensaje.style.background = "black";
+                mensaje.style.transition = ".6s all";
+                mensaje.innerHTML = "Accediendo... :)";
+                
+                setTimeout(
+                    function(){
+                      window.location.assign('notas.html');
+                    },2000);
+                
+                setTimeout(
+                    function()
+                    {
+                        mensaje.style.background = "transparent";
+                        mensaje.style.color = "transparent";
+                    }, 500);
+            }
+            else{
+                //alert('ERROR: El usuario no existe');
+                document.getElementById('usuario').style.border="3px solid red";
+                document.getElementById('password').style.border="3px solid red";
+                
+                mensaje = document.getElementById('mensaje');
+                mensaje.style.opacity="1";
+                mensaje.style.color = "white";
+                mensaje.style.background = "black";
+                mensaje.style.transition=".6s all";
+                mensaje.innerHTML="ERROR: Usuario no Valido :(";
+                navigator.vibrate('100');
+                navigator.vibrate('200');
+                
+                setTimeout(
+                    function()
+                    {
+                        mensaje.style.background = "transparent";
+                        mensaje.style.color = "transparent";
+                    }, 1000);
+            }
+        }
+    </script>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Notas</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <link href="Estilos/estilos_notas.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <nav>
+            <button>=</button>
+        </nav>
+        
+        <div class="notas">
+            <div class="nueva-nota">
+                <input id="titulo" type="text" placeholder="Titulo">
+                <textarea id="contenido" placeholder="Contenido de la nota..."></textarea>
+                <button onclick="almacenarNota()">Guardar</button>
+            </div>
+            <div id="notas-almacenadas">
+
+            </div>
+        </div>
+    </body>
+    <script>
+        function almacenarNota()
+        {
+            //CAPTURA VARIABLES DE lA NUEVA NOTA
+            titulo = document.getElementById('titulo').value;
+            contenido = document.getElementById('contenido').value;
+            
+            //CREAR CADENA DE ETXTO
+            if(!localStorage.getItem('notas'))
+            {
+                //No hay notas
+               //Creamos la cadena de texto para que quede de la siguiente forma
+               //titulo-contenido/titulo-contenido/titulo-contenido
+               //Despues almacenamos la cadena en la llave(key) notas
+               notas = titulo + '-' + contenido + '/';
+               notas = localStorage.setItem('notas',notas);
+            }
+            else
+            {
+                //Si hay notas
+                //Primero que nada obtenemos lo que ha había guardado en notas
+                //Concatenamos lo nuevo al final de la cadena ya existente
+                //Almacenamos la nueva cadena en notas
+                notas = localStorage.getItem('notas');
+                notas += titulo + '-' + contenido + '/';
+                notas = localStorage.setItem('notas',notas);
+            }
+            document.getElementById('titulo').value="";
+            document.getElementById('contenido').value="";
+            //GUARDAR NOTA
+            cargarNotas();
+        }
+        
+        //Objeto.addEventListener(evento, funcion, burbujas)
+        window.addEventListener('load', cargarNotas, true);
+        
+        function cargarNotas()
+        {
+            document.getElementById('notas-almacenadas').innerHTML = "";
+            //ObtenerNOtas
+            cadenaNotas = localStorage.getItem('notas');
+            //Separar notas
+            //Cadena.split(Separador, delimitador)
+            notas = cadenaNotas.split('/');
+            //CREAR NOTAS
+            i = 0;
+            numeroNotas = notas.length -1;
+            while(i < numeroNotas)
+            {
+                contenedorNotas = document.getElementById('notas-almacenadas');
+                nota = notas[i].split('-');
+                tituloNota = nota[0];
+                contenidoNota = nota[1];
+                contenedorNotas.innerHTML += "<div class='nota'>" +
+                                            "<button>x</button>" +
+                                            "<h1>"+tituloNota+"</h1>" +
+                                            "<p>"+contenidoNota+"</p>" +
+                                            "</div>";
+                i++;
+            }
+        }
+    </script>
+</html>
